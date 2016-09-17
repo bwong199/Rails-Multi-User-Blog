@@ -1,0 +1,37 @@
+<br>
+
+<% @blogs.each do |u| %>
+
+<p> <%= u.content %> </p> 
+<p> <%= u.likes.count %> likes </p>
+
+
+
+
+<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).any? %> 
+<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => u.id, :user_id => current_user.id}, :method => "post" %>
+<% else %> 
+<%= button_to "Unlike", {:controller => :likes, :action => 'destroy', :id => Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).first }, :method => "delete" %>
+
+<% end %> 
+
+
+
+
+
+
+<% if current_user.id == u.user.id %> 
+<%= button_to "Delete", {:controller => :blogs, :action => 'destroy', :id => u.id}, :method => "delete" %>
+<br>
+
+
+<br>
+
+<% end %>
+
+
+<% end %> 
+
+
+
+

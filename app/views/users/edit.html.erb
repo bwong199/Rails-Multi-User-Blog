@@ -1,0 +1,14 @@
+<h1>Edit</h1>
+<%= form_for(@user) do |f| %> 
+<%= f.label :email, "Email" %> 
+<%= f.email_field :email %> 
+
+<%= f.label :name, "Name"  %> 
+<%= f.text_field :name %> 
+
+<%= f.submit "Update" %>
+<% end %> 
+
+
+<%= button_to "Delete Account", {:controller => :users,
+	:action => 'destroy', :id => session[:user_id] }, :method => :delete %>

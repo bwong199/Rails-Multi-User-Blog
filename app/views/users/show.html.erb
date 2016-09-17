@@ -1,0 +1,21 @@
+<p><%= @user.id %> <p> 
+	<p><%= @user.name %> <p> 
+
+
+
+
+		<% @userBlog.each do |u| %> 
+
+		<p><%= u.content %> </p>
+		<p><%= u.likes.count %> likes</p>
+
+		<%= button_to "Delete", {:controller => :blogs, :action => 'destroy', :id => u.id, }, :method => "delete" %>
+		<br>
+		<% end %>
+
+		<%= form_for(@blog, url: blogs_path, html: {method: "post"}) do |f| %> 
+		<%=	f.label :content, "New Blog" %> 
+		<%= f.text_field :content, class: 'form-control' %> 
+
+		<%= f.submit "Create Blog", class: "btn btn-primary" %> 
+		<% end %> 
