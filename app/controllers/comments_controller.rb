@@ -4,13 +4,13 @@ class CommentsController < ApplicationController
 		user = User.find(params[:user_id])
 		blog = Blog.find(params[:blog_id])
 		Comment.create(user: user, blog: blog, content: comment_params[:content])
-		redirect_to blogs_path
+		redirect_to user_path(current_user)
 	end 
 
 	def destroy
 		comment = Comment.find(params[:id])
 		comment.destroy if comment.user == current_user
-		redirect_to blogs_path
+		redirect_to user_path(current_user)
 	end 
 
 	private

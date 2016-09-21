@@ -13,8 +13,18 @@ class BlogsController < ApplicationController
 
 	end 
 
-	def show
+	def edit
+		@blog = Blog.find(params[:id])
+	end 
 
+	def update
+		blog = Blog.find(params[:id])
+		blog.update_attributes(blog_params)
+		redirect_to user_path(current_user)
+	end 
+
+	def show
+		@blog = Blog.find(params[:id])
 	end 
 
 	def destroy
@@ -37,7 +47,7 @@ class BlogsController < ApplicationController
 	private
 
 	def blog_params
-		params.require(:blog).permit(:content)
+		params.require(:blog).permit(:content, :blog_id, :user_id)
 	end 
 
 end
