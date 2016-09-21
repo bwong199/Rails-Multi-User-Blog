@@ -7,4 +7,6 @@ class User < ActiveRecord::Base
   has_many :blogs
   has_many :likes, dependent: :destroy
   has_many :blogs_liked, through: :likes, source: :blog
+  has_many :comments, dependent: :destroy
+  has_many :blogs_commented, through: :comments, source: :blog
 end

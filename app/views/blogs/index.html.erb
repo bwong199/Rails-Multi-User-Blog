@@ -1,34 +1,49 @@
+
+
 <br>
 
 <% @blogs.each do |u| %>
 
-<p> <%= u.content %> </p> 
-<p> <%= u.likes.count %> likes </p>
+<div id="single_post"> 
+	<p> <%= u.content %> </p> 
+	<p> <%= u.likes.count %> likes </p>
+		<% u.comments.each do |c|  %> 
+			<p> <%= c.user.name %>: <%= c.content %> 
+					<% if current_user.id == c.user_id %> 
+						<%= button_to "Delete comment", {:controller => :comments, :action => 'destroy', :id => c.id}, :method => "delete", class: "btn btn-primary" %>
+					<% end %> 	
+			</p>
+		<% end %> 
+		<br>
+	<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).any? %> 
+	<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => u.id, :user_id => current_user.id}, :method => "post", class: "btn btn-primary" %>
 
+	<% else %> 
+	<%= button_to "Unlike", {:controller => :likes, :action => 'destroy', :id => Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).first }, :method => "delete", class: "btn btn-primary" %>
 
+	<% end %> 
+	<br>
+	<% if current_user.id == u.user.id %> 
+	<%= button_to "Delete", {:controller => :blogs, :action => 'destroy', :id => u.id}, :method => "delete", class: "btn btn-danger" %>
+		<span class="glyphicon glyphicon-trash"></span>
+	<% end %>
 
+	<br>
+	<%= form_for(@comment, url: comments_path, html: {method: "post"}) do |f| %> 
 
-<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).any? %> 
-<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => u.id, :user_id => current_user.id}, :method => "post" %>
-<% else %> 
-<%= button_to "Unlike", {:controller => :likes, :action => 'destroy', :id => Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).first }, :method => "delete" %>
+	<%= hidden_field_tag(:blog_id, u.id) %>
+	<%= hidden_field_tag(:user_id, current_user.id) %>
 
-<% end %> 
+	<%=	f.label :content, "Write a comment..." %> 
+	<%= f.text_field :content, class: 'form-control' %> 
+	<br>
+	<%= f.submit "Comment", class: "btn btn-primary" %> 
+	<% end %> 
+	<br>
+	<br>
+	<br>
 
-
-
-
-
-
-<% if current_user.id == u.user.id %> 
-<%= button_to "Delete", {:controller => :blogs, :action => 'destroy', :id => u.id}, :method => "delete" %>
-<br>
-
-
-<br>
-
-<% end %>
-
+	</div>
 
 <% end %> 
 

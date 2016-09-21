@@ -5,9 +5,10 @@ Rails.application.routes.draw do
   resources :users
   resources :blogs
   resources :likes
+  resources :comments
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
-
+  root 'sessions#new'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
