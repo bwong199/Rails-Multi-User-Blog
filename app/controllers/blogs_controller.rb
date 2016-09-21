@@ -28,15 +28,18 @@ class BlogsController < ApplicationController
 
 	def show
 		@blog = Blog.find(params[:id])
+	
 
-		render json: @blog
+		respond_to do |format|
+		   format.html # show.html.erb
+		   format.json { render json: @blog.to_json(:include => [:comments, :likes])}
+		 end
 	end 
 
 	def destroy
 		blog = Blog.find(params[:id])
 		blog.destroy if blog.user == current_user
 		redirect_to user_path(current_user)
-
 	end 
 
 	def create

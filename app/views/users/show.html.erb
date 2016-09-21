@@ -1,22 +1,60 @@
-<p><%= @user.id %> <p> 
-	<p><%= @user.name %> <p> 
-		<% @userBlog.each do |u| %> 
+<div class="row">
+	<h1 class="col-md-6 col-md-offset-4"> <%= current_user.name %>'s Blogs </h1>
+</div>
+<% @userBlog.each do |u| %> 
+<div id="single_post"> 
+	<p>  <%= link_to  u.content, blog_path(u.id), class: "navbar-brand" %></p> 
+	<br>
+	<br>
+	<br>
+	<p><%= u.likes.count %> likes</p>
+	
+	<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).any? %> 
+	<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => u.id, :user_id => current_user.id}, :method => "post", class: "btn btn-primary" %>
 
-		<p><%= u.content %> </p>
-		<p><%= u.likes.count %> likes</p>
-		<% u.comments.each do |c|  %> 
-			<p> <%= c.user.name %>: <%= c.content %></p>
-		<% end %> 
-		<br>
-		<%= button_to "Delete blog", {:controller => :blogs, :action => 'destroy', :id => u.id, }, :method => "delete", class: "btn btn-danger" %>
-		<br>
-		<% end %>
+	<% else %> 
+	<%= button_to "Unlike", {:controller => :likes, :action => 'destroy', :id => Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).first }, :method => "delete", class: "btn btn-primary" %>
 
-		<%= form_for(@blog, url: blogs_path, html: {method: "post"}) do |f| %> 
-		<%=	f.label :content, "New Blog" %> 
-		<%= f.text_field :content, class: 'form-control' %> 
-		<br>
-		<%= f.submit "Create Blog", class: "btn btn-primary" %> 
-		<br>
-		<% end %> 
-		<br>
+	<% end %> 
+	<% u.comments.each do |c|  %> 
+	<p> <%= c.user.name %>: <%= c.content %> 
+		<% if current_user.id == c.user_id %> 
+		<%= button_to "Delete comment", {:controller => :comments, :action => 'destroy', :id => c.id}, :method => "delete", class: "btn btn-primary" %>
+		<% end %> 	
+	</p>
+	<% end %> 
+
+
+	<br>
+	<%= button_to "Delete blog", {:controller => :blogs, :action => 'destroy', :id => u.id, }, :method => "delete", class: "btn btn-danger" %>
+	<br>
+	<%= button_to "Edit blog", {:controller => :blogs, :action => 'edit', :id => u.id}, :method => "get", class: "btn btn-primary" %>
+	<br>
+
+	<%= form_for(@comment, url: comments_path, html: {method: "post"}) do |f| %> 
+
+	<%= hidden_field_tag(:blog_id, u.id) %>
+	<%= hidden_field_tag(:user_id, current_user.id) %>
+
+	<%=	f.label :content, "New Comment" %> 
+	<%= f.text_field :content, class: 'form-control', placeholder: "Write a comment..." %> 
+	<br>
+	<%= f.submit "Comment", class: "btn btn-primary" %> 
+	<% end %> 
+</div>	
+
+
+<% end %>
+<br>
+<br>
+<br>
+<%= form_for(@blog, url: blogs_path, html: {method: "post"}) do |f| %> 
+<%=	f.label :content, "New Blog" %> 
+<%= f.text_field :content, class: 'form-control' %> 
+<br>
+<%= f.submit "Create Blog", class: "btn btn-primary" %> 
+<br>
+<br>
+<% end %> 
+
+

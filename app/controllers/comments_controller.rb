@@ -1,4 +1,10 @@
 class CommentsController < ApplicationController
+	before_action :require_login, only: [:index, :create, :destroy]
+
+	def index
+
+	end 
+
 
 	def create 
 		user = User.find(params[:user_id])

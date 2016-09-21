@@ -3,6 +3,10 @@ class UsersController < ApplicationController
 	before_action :require_correct_user, only: [:show, :edit, :update, :destroy]
 
 	
+	def index
+
+	end 
+
 	def new
 		@user = User.new
 
@@ -44,6 +48,7 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
 		@userBlog = User.find(params[:id]).blogs.all
 		@blog = Blog.new
+		@comment = Comment.new
 	end 
 
 

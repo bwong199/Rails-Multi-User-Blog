@@ -1,7 +1,46 @@
-<%= @blog.content %> 
-<br>
-<% @blog.comments.each do |u| %> 
+<div id="single_post"> 
+	<div class="row">
+		<div class="col-md-3 col-md-offset-1">
+			<h1> <%= @blog.content %> </h1>
+			<p><%=  @blog.likes.count %> likes</p>
+			<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, @blog.id).any? %> 
+			<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => @blog.id, :user_id => current_user.id}, :method => "post", class: "btn btn-primary" %>
 
-<%= u.content %> 
-<br>
-<% end %> 
+			<% else %> 
+			<%= button_to "Unlike", {:controller => :likes, :action => 'destroy', :id => Like.where("user_id =  ? and blog_id =  ?", current_user.id, @blog.id).first }, :method => "delete", class: "btn btn-primary" %>
+
+			<% end %> 
+		</div>
+	</div>
+
+	<br>
+	<div class="row">
+		<div class="col-md-3 col-md-offset-1">
+			<% @blog.comments.each do |c| %> 
+
+			<p> <%= c.user.name %>: <%= c.content %> 
+				<% if current_user.id == c.user_id %> 
+				<%= button_to "Delete comment", {:controller => :comments, :action => 'destroy', :id => c.id}, :method => "delete", class: "btn btn-primary" %>
+				<% end %> 	
+			</p>
+			<br>
+			<% end %> 
+
+
+		</div>
+
+
+	</div>
+	<div class="row">
+		<div class="col-md-3 col-md-offset-1">
+
+			<% if current_user.id ==  @blog.user.id %> 
+			<%= button_to "Delete blog", {:controller => :blogs, :action => 'destroy', :id =>  @blog.id}, :method => "delete", class: "btn btn-danger" %>
+			<br>
+			<%= button_to "Edit blog", {:controller => :blogs, :action => 'edit', :id =>  @blog.id}, :method => "get", class: "btn btn-primary" %>
+			<% end %>
+		</div>
+
+
+	</div>
+</div>
