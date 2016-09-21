@@ -3,7 +3,6 @@ class BlogsController < ApplicationController
 
 	def new 
 		@blog = Blog.new
-
 	end 
 
 	def index
@@ -11,6 +10,10 @@ class BlogsController < ApplicationController
 		@userlikes = Like.all
 		@comment = Comment.new
 
+		respond_to do |format|
+		   format.html # show.html.erb
+		   format.json { render json: @blogs.to_json(:include => [:comments, :likes])}
+		 end
 	end 
 
 	def edit
@@ -25,6 +28,8 @@ class BlogsController < ApplicationController
 
 	def show
 		@blog = Blog.find(params[:id])
+
+		render json: @blog
 	end 
 
 	def destroy

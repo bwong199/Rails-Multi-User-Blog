@@ -7,7 +7,10 @@
 <div id="single_post"> 
 	
 	<p>  <%= link_to  u.content, blog_path(u.id), class: "navbar-brand" %></p> 
+	<br>
+	<br>
 	<p> <%= u.likes.count %> likes </p>
+	<br>
 	<% if !Like.where("user_id =  ? and blog_id =  ?", current_user.id, u.id).any? %> 
 	<%= button_to "Like", {:controller => :likes, :action => 'create', :blog_id => u.id, :user_id => current_user.id}, :method => "post", class: "btn btn-primary" %>
 

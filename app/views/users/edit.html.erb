@@ -6,9 +6,9 @@
 <%= f.label :name, "Name"  %> 
 <%= f.text_field :name %> 
 
-<%= f.submit "Update" %>
+<%= f.submit "Update", class: "btn btn-primary" %>
 <% end %> 
 
 
 <%= button_to "Delete Account", {:controller => :users,
-	:action => 'destroy', :id => session[:user_id] }, :method => :delete %>
+	:action => 'destroy', :id => session[:user_id] }, :method => :delete, class: "btn btn-danger" %>
