@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def require_login
-  	redirect_to new_session_path if session[:user_id] == nil
+  	redirect_to new_sessions_path if session[:user_id] == nil
   end
 
   def require_correct_user
