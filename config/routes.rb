@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   resources :comments
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
+  match '/login' => 'sessions#new', :via => [:get], :as => 'new_sessions'
+  match '/signup' => 'users#new', :via => [:get], :as => 'new_users'
+
   root 'sessions#new'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
