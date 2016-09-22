@@ -9,19 +9,19 @@ RSpec.describe UsersController, type: :controller do
 		end
 		it "cannot access show" do
 			get :show, id: @user
-			expect(response).to redirect_to('/sessions/new')
+			expect(response).to redirect_to('/login')
 		end
 		it "cannot access edit" do
 			get :edit, id: @user
-			expect(response).to redirect_to('/sessions/new')
+			expect(response).to redirect_to('/login')
 		end
 		it "cannot access update" do
 			patch :update, id: @user
-			expect(response).to redirect_to('/sessions/new')
+			expect(response).to redirect_to('/login')
 		end
 		it "cannot access destroy" do
 			delete :destroy, id: @user
-			expect(response).to redirect_to('/sessions/new')
+			expect(response).to redirect_to('/login')
 		end
 	end
 

@@ -1,5 +1,6 @@
 class BlogsController < ApplicationController
 	before_action :require_login, only: [:index, :create, :destroy]
+	before_action :require_correct_user, only: [:show, :edit, :update, :destroy]
 
 	def new 
 		@blog = Blog.new
@@ -58,4 +59,8 @@ class BlogsController < ApplicationController
 		params.require(:blog).permit(:content, :blog_id, :user_id)
 	end 
 
+	def require_correct_user
+		user = Blog.find(params[:id]).user
+		redirect_to user_path(current_user) if current_user != user
+	end
 end
